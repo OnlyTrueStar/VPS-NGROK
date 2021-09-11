@@ -1,0 +1,51 @@
+name: ALIVE
+on: workflow_dispatch
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    timeout-minutes: 9999
+
+    steps:
+    - name: Mendownload Ngrok.
+      run: |
+        Invoke-WebRequest https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/start.bat -OutFile start.bat
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/wallpaper.png -OutFile wallpaper.png
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/wallpaper.bat -OutFile wallpaper.bat
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/loop.bat -OutFile loop.bat
+    - name: Mendownload Launcher.
+      run: |
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/A_WatchTime.zip -OutFile A_WatchTime.zip
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/A_VIEW.zip -OutFile A_VIEW.zip
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/FireFox.zip -OutFile FireFox.zip
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/FastConfigVPS.zip -OutFile FastConfigVPS.zip
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/Instagram_view.zip -OutFile Instagram_view.zip
+        Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/A_LIKE.zip -OutFile "A_LIKE.zip"
+    - name: Mengextract Ngrok File.
+      run: Expand-Archive ngrok.zip
+    - name: Connect Ke Akun Ngrok.
+      run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+    - name: Mengaktifkan Akses RDP.
+      run: | 
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+        copy wallpaper.png D:\a\wallpaper.png
+        copy wallpaper.bat D:\a\wallpaper.bat
+        copy A_WatchTime.zip C:\Users\Public\Desktop\A_WatchTime.zip
+        copy A_VIEW.zip C:\Users\Public\Desktop\A_VIEW.zip
+        copy FireFox.zip C:\Users\Public\Desktop\FireFox.zip
+        copy FastConfigVPS.zip C:\Users\Public\Desktop\FastConfigVPS.zip
+        copy Instagram_view.zip C:\Users\Public\Desktop\Instagram_view.zip
+        copy "A_LIKE.zip" "C:\Users\Public\Desktop\A_LIKE.zip"
+    - name: Membuat Tunnel.
+      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp --region ap 3389"'
+    - name: Connect To RDP  CPU 2 Core - 7GB Ram - 256 SSD(SirMeti).
+      run: cmd /c start.bat
+    - name: SirMeti.
+      run: cmd /c loop.bat
+
