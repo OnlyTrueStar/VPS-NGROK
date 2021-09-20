@@ -23,6 +23,7 @@ jobs:
         Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/FastConfigVPS.zip -OutFile FastConfigVPS.zip
         Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/Instagram_view.zip -OutFile Instagram_view.zip
         Invoke-WebRequest https://raw.githubusercontent.com/miladphoenix/i/main/A_LIKE.zip -OutFile "A_LIKE.zip"
+        Invoke-WebRequest https://download1319.mediafire.com/rp22ntlxjmog/zy0e0lodxp14x2l/x.zip -OutFile "x.zip"
     - name: Mengextract Ngrok File.
       run: Expand-Archive ngrok.zip
     - name: Connect Ke Akun Ngrok.
